@@ -18,7 +18,8 @@ public class MyRealm1 implements Realm{
 
     public AuthenticationInfo getAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         String username= (String) authenticationToken.getPrincipal();
-        String password= (String) authenticationToken.getCredentials();
+        char[] pass= (char[]) authenticationToken.getCredentials();
+        String password=new String(pass);
         if(!"zhang".equals(username)){
             throw new UnknownAccountException();//如果用户名错误
         }

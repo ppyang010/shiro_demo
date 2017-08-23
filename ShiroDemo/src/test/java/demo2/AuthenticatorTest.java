@@ -21,7 +21,7 @@ public class AuthenticatorTest {
 
     @Test(expected = UnknownAccountException.class)
     public void testAllSuccessfulStrategyWithFail() {
-        login("classpath:shiro-authenticator-all-success.ini");
+        login("classpath:shiro-authenticator-all-fail.ini");
         Subject subject = SecurityUtils.getSubject();
         System.out.println(subject.isAuthenticated());
     }
@@ -34,6 +34,26 @@ public class AuthenticatorTest {
         PrincipalCollection principalCollection = subject.getPrincipals();
         Assert.assertEquals(2, principalCollection.asList().size());
     }
+    @Test
+    public void testAtLeastOneSuccessfulStrategyWithSuccess() {
+        login("classpath:shiro-authenticator-atLeastOne-success.ini");
+        Subject subject = SecurityUtils.getSubject();
+
+        //得到一个身份集合，其包含了Realm验证成功的身份信息
+        PrincipalCollection principalCollection = subject.getPrincipals();
+        Assert.assertEquals(2, principalCollection.asList().size());
+    }
+
+    @Test
+    public void testFirstOneSuccessfulStrategyWithSuccess() {
+        login("classpath:shiro-authenticator-first-success.ini");
+        Subject subject = SecurityUtils.getSubject();
+
+        //得到一个身份集合，其包含了第一个Realm验证成功的身份信息
+        PrincipalCollection principalCollection = subject.getPrincipals();
+        Assert.assertEquals(1, principalCollection.asList().size());
+    }
+
 
     //首先通用化登录逻辑
     private void login(String configFile) {
