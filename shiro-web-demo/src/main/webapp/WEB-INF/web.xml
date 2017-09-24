@@ -7,21 +7,23 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_0.xsd"
          version="3.1">
   <display-name>shiro web demo</display-name>
-
-
+    <!--shiro 初始化 SecurityManager-->
+    <!--自定义环境初始化类 可以自定义-->
+    <context-param>
+        <param-name>shiroEnvironmentClass</param-name>
+        <param-value>org.apache.shiro.web.env.IniWebEnvironment</param-value>
+    </context-param>
+    <!--自定义配置文件地址-->
+    <context-param>
+        <param-name>shiroConfigLocations</param-name>
+        <param-value>classpath:shiro-web.ini</param-value>
+    </context-param>
 
   <listener>
     <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
+      <!-- 默认先从/WEB-INF/shiro.ini，如果没有找classpath:shiro.ini
+       或者shiroConfigLocations自定义-->
   </listener>
-
-    <!--使用自定义ini配置-->
-    <!--默认
-        /WEB-INF/shiro.ini
-        shiro.ini file at the root of the classpath.-->
-  <context-param>
-    <param-name>shiroConfigLocations</param-name>
-    <param-value>classpath:shiro-jdbc-realm.ini</param-value>
-  </context-param>
 
 
   <filter>
@@ -29,10 +31,7 @@
     <filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
   </filter>
 
-  <filter-mapping>
-    <filter-name>ShiroFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
+
   <filter-mapping>
     <filter-name>ShiroFilter</filter-name>
     <url-pattern>/*</url-pattern>
