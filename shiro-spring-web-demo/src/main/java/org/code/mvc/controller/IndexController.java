@@ -17,24 +17,16 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/")
 public class IndexController {
 
-    @Autowired
-    SecurityManager securityManager;
 
-    @RequestMapping("/doLogin")
-    public String doLogin(User user, HttpServletRequest request){
-        System.out.println("doLogin");
-        UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
-        Subject subject = SecurityUtils.getSubject();
-        try{
-            subject.login(token);//会跳到我们自定义的realm中
-            request.getSession().setAttribute("user", user);
-            return "index";
-        }catch(Exception e){
-            e.printStackTrace();
-            request.getSession().setAttribute("user", user);
-            request.setAttribute("error", "用户名或密码错误！");
-            return "login";
-        }
+    @RequestMapping("/index")
+    public String index(User user, HttpServletRequest request){
+        return "index";
     }
+
+    @RequestMapping("/hello")
+    public String hello(User user, HttpServletRequest request){
+        return "hello";
+    }
+
 
 }

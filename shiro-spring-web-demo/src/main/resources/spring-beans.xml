@@ -56,7 +56,7 @@
         <constructor-arg index="0" ref="sqlSessionFactory"/>
     </bean>
 
-    <!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+    <!-- DAO接口所在包名，Spring会自动查找其下的类 dao层可以没有实现类 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="org.code.mvc.dao" />
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>

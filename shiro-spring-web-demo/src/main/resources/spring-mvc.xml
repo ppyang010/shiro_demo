@@ -9,14 +9,14 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
-
-    <!--扫描包 并过滤下面的注解的类-->
+    <mvc:annotation-driven/>
+    <!--扫描包 不使用默认拦截  只拦截包含参数所示两个注解的类  生成bean-->
     <context:component-scan base-package="org.code.mvc.controller" use-default-filters="false">
-        <!--<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>-->
+        <!--使用下面注解的类才会被生成bean并加入到spring中-->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
         <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
     </context:component-scan>
 
-    <mvc:annotation-driven/>
     <aop:config proxy-target-class="true"></aop:config>
     <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
         <property name="securityManager" ref="securityManager"/>
@@ -29,8 +29,9 @@
     <bean id="defaultViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
         <property name="contentType" value="text/html"/>
-        <property name="prefix" value="/"/>
+        <property name="prefix" value="/WEB-INF/page/"/>
         <property name="suffix" value=".jsp"/>
+        <property name="order" value="0" /><!--多个视图解析器优先级 越小优先级越高  -->
     </bean>
 
     <!-- 控制器异常处理 -->
