@@ -10,7 +10,7 @@
                         http://www.springframework.org/schema/mvc
                         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
     <!-- 自动扫描 -->
-    <context:component-scan base-package="org.code" />
+    <context:component-scan base-package="org.code.mvc.service"/>
     <!-- 引入配置文件 -->
     <!--可以使用${} 和@Value 方式-->
     <bean id="propertyConfigurer"
@@ -20,16 +20,16 @@
                 <value>classpath:db.properties</value>
             </list>
         </property>
-        <property name="fileEncoding" value="utf-8" />
+        <property name="fileEncoding" value="utf-8"/>
     </bean>
 
 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
           destroy-method="close">
-        <property name="driverClassName" value="${mysql.driver}" />
-        <property name="url" value="${mysql.url}" />
-        <property name="username" value="${mysql.username}" />
-        <property name="password" value="${mysql.password}" />
+        <property name="driverClassName" value="${mysql.driver}"/>
+        <property name="url" value="${mysql.url}"/>
+        <property name="username" value="${mysql.username}"/>
+        <property name="password" value="${mysql.password}"/>
         <!-- 初始化连接大小 -->
         <property name="initialSize" value="${initialSize}"></property>
         <!-- 连接池最大数量 -->
@@ -42,30 +42,30 @@
         <property name="maxWait" value="${maxWait}"></property>
     </bean>
 
-    <!--&lt;!&ndash; spring和MyBatis完美整合，不需要mybatis的配置映射文件 &ndash;&gt;-->
-    <!--<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
-        <!--<property name="dataSource" ref="dataSource" />-->
-        <!--&lt;!&ndash; 自动扫描mapping.xml文件 &ndash;&gt;-->
-        <!--<property name="mapperLocations" value="classpath:org/code/server/mapper/*.xml"></property>-->
-        <!--&lt;!&ndash; 添加映射配置文件-->
-        <!--<property name="configLocation" value="classpath:mybatis-config.xml" />  &ndash;&gt;-->
-    <!--</bean>-->
-    <!--&lt;!&ndash;注入sqlsessionTemplate  &ndash;&gt;-->
-    <!--&lt;!&ndash; 数据访问模板类 &ndash;&gt;-->
-    <!--<bean id="sqlSessionTemplate"     class="org.mybatis.spring.SqlSessionTemplate">-->
-        <!--<constructor-arg index="0" ref="sqlSessionFactory" />-->
-    <!--</bean>-->
+    <!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 自动扫描mapping.xml文件 -->
+        <property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+        <!-- 添加映射配置文件-->
+        <property name="configLocation" value="classpath:mybatis-config.xml" />
+    </bean>
+    <!--注入sqlsessionTemplate  -->
+    <!-- 数据访问模板类 -->
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    </bean>
 
-    <!--&lt;!&ndash; DAO接口所在包名，Spring会自动查找其下的类 &ndash;&gt;-->
-    <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
-        <!--<property name="basePackage" value="org.code.server.dao" />-->
-        <!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>-->
-    <!--</bean>-->
+    <!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="org.code.mvc.dao" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+    </bean>
 
-    <!--&lt;!&ndash; (事务管理)transaction manager, use JtaTransactionManager for global tx &ndash;&gt;-->
-    <!--<bean id="transactionManager"-->
-          <!--class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
-        <!--<property name="dataSource" ref="dataSource" />-->
-    <!--</bean>-->
+    <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
 
 </beans>
