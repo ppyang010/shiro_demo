@@ -8,5 +8,11 @@
 <shiro:user>
     欢迎[<shiro:principal/>]登录，<a href="${pageContext.request.contextPath}/user/logout">点击退出</a><br/>
 </shiro:user>
+<h4>角色</h4>
+<a href="${pageContext.request.contextPath}/adminrole">adminrole</a><br/>
+<a href="${pageContext.request.contextPath}/admin">admin</a><br/>
+<h4>权限</h4>
+<a href="${pageContext.request.contextPath}/adminview">admin view</a><br/>
+<a href="${pageContext.request.contextPath}/userview">user view</a><br/>
 </body>
 </html>

@@ -2,12 +2,15 @@ package org.code.Realm;
 
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.code.mvc.model.User;
 import org.code.mvc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Set;
 
 /**
  * Created by s on 2017/9/26.
@@ -16,9 +19,16 @@ public class MyRealm extends AuthorizingRealm {
 
     @Autowired
     UserService userService;
-
+    //授权 subject进行权限或者角色判断的时候就会执行这里
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        return null;
+        String username = (String) principalCollection.getPrimaryPrincipal();
+        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        Set<String> temp=userService.findRoles(username);
+        simpleAuthorizationInfo.setRoles(temp);
+        temp=userService.findPermissions(username);
+        simpleAuthorizationInfo.setStringPermissions(temp);
+
+        return simpleAuthorizationInfo;
     }
     //Authentication（认证）（认证身份）（登陆）
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
